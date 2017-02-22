@@ -15,15 +15,29 @@ branches:
 before_deploy:
     - ./before_deploy.sh
 deploy:
-    skip_cleanup: true
-    provider: releases
-    prerelease: true
-    api_key:
-        secure: Nv03RTxW7bjWK1mIXakX+026TE8j4bUfAtd8HUMjhbTApTozqzgf3j2L8F8u+YG5zdMRs/ZsvniZgcB4zxCmCjox10SMgFQGPKTNyri6Nx7lgiqFmQ/E0UOqi03blN1MojRkjFHtKAgjeO5ah2W18bXMFoMNXoDQHmGLfbf0q3fjj+JQ8Bbe12D5efWG8EWg++w310Kn6Q0jlgOW1vwsAXY5pLAtYos8t4oXtbJZw36q4S81VpPoJYM3hcCNdtaVmH/YJ+5htXVITYZhJhQeAR8vTEl3mNWA56PXzSXQzx/bg8imsYCOIgOPJc5/ilPjJ7eulYtpGyr3VDMnHLmh4mxsoTn/zzyY88TLrQVlDoa8uVw4fqvMEdxzBEr6Sm1VPbRUX57bvyDYP9EovJlozSCxFEGfemXC0OYrFTWFkEblV/r4Q1tDwkedtbFOfbdfrXysApTTfYq2v6u+1lW/BBbOgzxwkPEh/u1kCwmoFfeiMfP9Zte0NUEcYZGKRMTOAo0i+GlHyHMRycZYuRnP7pkATFK4F+B6+c36TLOgYFiC8F5KEWE0CMfrHXSB4cKfVVH3Ca9FNKNeB6PnA0SXZNtASx/djhiLFEGqNWFPZ/mulUvsvL0fxhv+8NFMviO03T1gLjkyibnoSrmTxcYacKqumn7/Qdcz9OWs4YlltUY=
+    - provider: releases
+      skip_cleanup: true
+      provider: releases
+      prerelease: true
+      api_key:
+          secure: Nv03RTxW7bjWK1mIXakX+026TE8j4bUfAtd8HUMjhbTApTozqzgf3j2L8F8u+YG5zdMRs/ZsvniZgcB4zxCmCjox10SMgFQGPKTNyri6Nx7lgiqFmQ/E0UOqi03blN1MojRkjFHtKAgjeO5ah2W18bXMFoMNXoDQHmGLfbf0q3fjj+JQ8Bbe12D5efWG8EWg++w310Kn6Q0jlgOW1vwsAXY5pLAtYos8t4oXtbJZw36q4S81VpPoJYM3hcCNdtaVmH/YJ+5htXVITYZhJhQeAR8vTEl3mNWA56PXzSXQzx/bg8imsYCOIgOPJc5/ilPjJ7eulYtpGyr3VDMnHLmh4mxsoTn/zzyY88TLrQVlDoa8uVw4fqvMEdxzBEr6Sm1VPbRUX57bvyDYP9EovJlozSCxFEGfemXC0OYrFTWFkEblV/r4Q1tDwkedtbFOfbdfrXysApTTfYq2v6u+1lW/BBbOgzxwkPEh/u1kCwmoFfeiMfP9Zte0NUEcYZGKRMTOAo0i+GlHyHMRycZYuRnP7pkATFK4F+B6+c36TLOgYFiC8F5KEWE0CMfrHXSB4cKfVVH3Ca9FNKNeB6PnA0SXZNtASx/djhiLFEGqNWFPZ/mulUvsvL0fxhv+8NFMviO03T1gLjkyibnoSrmTxcYacKqumn7/Qdcz9OWs4YlltUY=
 
-    file:
-        - $TRAVIS_BUILD_DIR/build/distributions/Mission-Kontrol.tar
-        - $TRAVIS_BUILD_DIR/build/distributions/Mission-Kontrol.zip
-    on:
-        repo: Neasgul/Mission-Kontrol
-        tags: false
+      file:
+          - $TRAVIS_BUILD_DIR/build/distributions/Mission-Kontrol.zip
+      on:
+          repo: Neasgul/Mission-Kontrol
+          tags: false
+          branch: develop
+
+    - provider: releases
+      skip_cleanup: true
+      provider: releases
+      api_key:
+          secure: Nv03RTxW7bjWK1mIXakX+026TE8j4bUfAtd8HUMjhbTApTozqzgf3j2L8F8u+YG5zdMRs/ZsvniZgcB4zxCmCjox10SMgFQGPKTNyri6Nx7lgiqFmQ/E0UOqi03blN1MojRkjFHtKAgjeO5ah2W18bXMFoMNXoDQHmGLfbf0q3fjj+JQ8Bbe12D5efWG8EWg++w310Kn6Q0jlgOW1vwsAXY5pLAtYos8t4oXtbJZw36q4S81VpPoJYM3hcCNdtaVmH/YJ+5htXVITYZhJhQeAR8vTEl3mNWA56PXzSXQzx/bg8imsYCOIgOPJc5/ilPjJ7eulYtpGyr3VDMnHLmh4mxsoTn/zzyY88TLrQVlDoa8uVw4fqvMEdxzBEr6Sm1VPbRUX57bvyDYP9EovJlozSCxFEGfemXC0OYrFTWFkEblV/r4Q1tDwkedtbFOfbdfrXysApTTfYq2v6u+1lW/BBbOgzxwkPEh/u1kCwmoFfeiMfP9Zte0NUEcYZGKRMTOAo0i+GlHyHMRycZYuRnP7pkATFK4F+B6+c36TLOgYFiC8F5KEWE0CMfrHXSB4cKfVVH3Ca9FNKNeB6PnA0SXZNtASx/djhiLFEGqNWFPZ/mulUvsvL0fxhv+8NFMviO03T1gLjkyibnoSrmTxcYacKqumn7/Qdcz9OWs4YlltUY=
+
+      file:
+          - $TRAVIS_BUILD_DIR/build/distributions/Mission-Kontrol.zip
+      on:
+          repo: Neasgul/Mission-Kontrol
+          tags: false
+          branch: master

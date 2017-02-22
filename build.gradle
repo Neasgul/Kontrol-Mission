@@ -1,0 +1,41 @@
+group 'xyz.neasgul'
+version "0.1"
+apply plugin: 'java'
+apply plugin: 'java-library-distribution'
+apply plugin: 'idea'
+
+
+sourceCompatibility = 1.8
+
+distZip.shouldRunAfter(build)
+
+
+jar {
+    // Keep jar clean:
+    exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.MF'
+
+    manifest {
+        attributes 'Main-Class': 'xyz.neasgul.missionkontrol.Main',
+                'Class-Path': configurations.runtime.files.collect { "lib/$it.name" }.join(' ')
+    }
+    archiveName 'Mission-Kontrol.jar'
+    distZip {
+        archiveName 'Mission-Kontrol.zip'
+    }
+    distTar {
+        archiveName 'Mission-Kontrol.tar'
+    }
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile group: 'org.javatuples', name: 'javatuples', version: '1.2'
+    compile group: 'com.google.protobuf', name: 'protobuf-java', version: '3.0.0-beta-2'
+    compile 'eu.hansolo:Medusa:7.6'
+    compile fileTree(dir: 'src/libs', include: ['*.jar'])
+}

@@ -22,9 +22,6 @@ jar {
     distZip {
         archiveName 'Mission-Kontrol.zip'
     }
-    distTar {
-        archiveName 'Mission-Kontrol.tar'
-    }
 }
 
 

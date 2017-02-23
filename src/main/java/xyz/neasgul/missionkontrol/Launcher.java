@@ -19,7 +19,7 @@ public class Launcher extends Application{
 
         private Stage primaryStage;
         private BorderPane rootLayout;
-
+        private ConnectionManager connectionManager;
         @Override
         public void start(Stage primaryStage) {
             this.primaryStage = primaryStage;
@@ -28,10 +28,18 @@ public class Launcher extends Application{
             initRootLayout();
         }
 
+        @Override
+        public void stop() {
+            System.out.println("onStop()");
+            if(connectionManager.isConnected()) {
+                connectionManager.CloseConnection();
+            }
+        }
         /**
          * Initializes the root layout.
          */
         protected void initRootLayout() {
+            connectionManager = ConnectionManager.getInstance();
             try {
                 // Load root layout from fxml file.
                 FXMLLoader loader = new FXMLLoader();

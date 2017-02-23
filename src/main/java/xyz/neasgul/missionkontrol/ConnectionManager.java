@@ -75,13 +75,8 @@ public class ConnectionManager {
         return OpenConnection(name,addr,50000,50001);
     }
 
-    public boolean getConnectionStatus() {
-        try {
-            mSpaceCenter.getUT();
-            return true;
-        } catch (RPCException | IOException e) {
-            return false;
-        }
+    public boolean isConnected() {
+            return mConnection != null;
     }
 
     /**

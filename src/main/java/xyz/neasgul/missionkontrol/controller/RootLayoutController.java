@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import org.javatuples.Triplet;
 import xyz.neasgul.missionkontrol.APPSettings;
@@ -75,7 +76,7 @@ public class RootLayoutController {
     }
     @FXML
     private void handleExit(){
-        System.exit(0);
+        mainApp.getPrimaryStage().fireEvent(new WindowEvent(mainApp.getPrimaryStage(),WindowEvent.WINDOW_CLOSE_REQUEST));
     }
     @FXML
     private void handleSettings(){

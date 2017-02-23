@@ -33,7 +33,7 @@ import java.util.TimerTask;
  *//*
 public class MainScreen_Controller {
     public static final String TAG = "MainScreen";
-    ConnexionManager connexionManager;
+    ConnectionManager connexionManager;
     private StageManager stageManager;
 
     @FXML
@@ -74,7 +74,7 @@ public class MainScreen_Controller {
         assert ship_name != null : "fx:id=\"ship_name\" was not injected: check your FXML file 'RootLayout.fxml'.";
         assert Server != null : "fx:id=\"Server\" was not injected: check your FXML file 'RootLayout.fxml'.";
         APPSettings settings = APPSettings.getSettings();
-        connexionManager = ConnexionManager.getInstance();
+        connexionManager = ConnectionManager.getInstance();
         stageManager = StageManager.getInstance();
         // Launch the connexion dialog
         Launcher.showConnexionDialog("Connexion to the KRPC server",

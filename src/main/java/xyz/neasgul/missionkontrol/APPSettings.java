@@ -19,9 +19,9 @@ public class APPSettings {
 
     private static HashMap<String, String> mSettings_map;
 
-    public static String DEFAULT_CONNEXION_ADDRESS = "DEFAULT_CONNEXION_ADDRESS";
-    public static String DEFAULT_CONNEXION_NAME = "DEFAULT_CONNEXION_NAME";
-    public static String SAVE_CONNEXION_INFO = "SAVE_CONNEXION_INFO";
+    public static String DEFAULT_CONNECTION_ADDRESS = "DEFAULT_CONNECTION_ADDRESS";
+    public static String DEFAULT_CONNECTION_NAME = "DEFAULT_CONNECTION_NAME";
+    public static String SAVE_CONNECTION_INFO = "SAVE_CONNECTION_INFO";
 
 
     public static APPSettings getSettings() {
@@ -46,9 +46,9 @@ public class APPSettings {
             prop.load(input);
             if(prop.isEmpty()){
                 // if empty set it to default value
-                mSettings_map.put(DEFAULT_CONNEXION_ADDRESS,"127.0.0.1");
-                mSettings_map.put(DEFAULT_CONNEXION_NAME,"Localhost");
-                mSettings_map.put(SAVE_CONNEXION_INFO,"true");
+                mSettings_map.put(DEFAULT_CONNECTION_ADDRESS,"127.0.0.1");
+                mSettings_map.put(DEFAULT_CONNECTION_NAME,"Localhost");
+                mSettings_map.put(SAVE_CONNECTION_INFO,"true");
                 // and save it
                 saveSettings();
             }else {

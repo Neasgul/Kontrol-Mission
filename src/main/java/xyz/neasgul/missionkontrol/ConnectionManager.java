@@ -13,8 +13,8 @@ import java.util.ArrayList;
 /**
  * Created by Benoit on 27/04/2016.
  */
-public class ConnexionManager {
-    private static ConnexionManager ourInstance;
+public class ConnectionManager {
+    private static ConnectionManager ourInstance;
     private static Connection mConnection;
     private static String mConnexionName;
     private static String mAddr;
@@ -29,15 +29,15 @@ public class ConnexionManager {
      * Get an instance of a Connexion manager
      * @return the instance of the Connexion manager
      */
-    public static ConnexionManager getInstance() {
+    public static ConnectionManager getInstance() {
 
         if (ourInstance == null){
-            ourInstance = new ConnexionManager();
+            ourInstance = new ConnectionManager();
         }
         return ourInstance;
     }
 
-    private ConnexionManager(){
+    private ConnectionManager(){
         mStreamArray = new ArrayList<Stream>();
     }
 
@@ -50,7 +50,7 @@ public class ConnexionManager {
      * @return a boolean for know if the connexion is establish
      * @throws IOException
      */
-    public boolean OpenConnexion(String name, String addr, int rpcport, int streamport) throws IOException {
+    public boolean OpenConnection(String name, String addr, int rpcport, int streamport) throws IOException {
         mConnexionName = name;
         mAddr = addr;
         mRpcPort = rpcport;
@@ -71,15 +71,24 @@ public class ConnexionManager {
      * @return a boolean for know if the connexion is establish
      * @throws IOException
      */
-    public boolean OpenConnexion(String name, String addr) throws IOException {
-        return OpenConnexion(name,addr,50000,50001);
+    public boolean OpenConnection(String name, String addr) throws IOException {
+        return OpenConnection(name,addr,50000,50001);
+    }
+
+    public boolean getConnectionStatus() {
+        try {
+            mSpaceCenter.getUT();
+            return true;
+        } catch (RPCException | IOException e) {
+            return false;
+        }
     }
 
     /**
      * A method for close the current connexion to the server
      * @return a boolean for know if the closing is successful
      */
-    public boolean CloseConnexion(){
+    public boolean CloseConnection(){
         try {
             mConnection.close();
             return true;

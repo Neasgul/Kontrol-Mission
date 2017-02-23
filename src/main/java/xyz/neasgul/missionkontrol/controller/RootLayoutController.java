@@ -5,7 +5,6 @@ import eu.hansolo.medusa.GaugeBuilder;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -21,7 +20,7 @@ import javafx.util.Duration;
 import org.javatuples.Triplet;
 import xyz.neasgul.missionkontrol.APPSettings;
 import xyz.neasgul.missionkontrol.ConnectDialog;
-import xyz.neasgul.missionkontrol.ConnexionManager;
+import xyz.neasgul.missionkontrol.ConnectionManager;
 import xyz.neasgul.missionkontrol.Launcher;
 import xyz.neasgul.missionkontrol.Utils.Utils;
 
@@ -30,18 +29,16 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.time.LocalTime;
 import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by benoitchopinet on 11/08/2016.
  */
 public class RootLayoutController {
     private Launcher mainApp;
-    private ConnexionManager connexionManager;
+    private ConnectionManager connectionManager;
     private APPSettings appSettings = APPSettings.getSettings();
 
-    private Task<Void> testConnexionTask;
+    private Task<Void> testConnectionTask;
     /**
      * Is called by the launcher to give a reference back to itself.
      *
@@ -60,13 +57,13 @@ public class RootLayoutController {
 
     @FXML
     private void handleConnect(){
-        ConnectDialog connectDialog = new ConnectDialog("Connexion to the KRPC server",
-                Triplet.with(appSettings.getSetting(APPSettings.DEFAULT_CONNEXION_NAME),appSettings.getSetting(APPSettings.DEFAULT_CONNEXION_ADDRESS),appSettings.getSetting(APPSettings.SAVE_CONNEXION_INFO).equals("true")));
+        ConnectDialog connectDialog = new ConnectDialog("Connection to the KRPC server",
+                Triplet.with(appSettings.getSetting(APPSettings.DEFAULT_CONNECTION_NAME),appSettings.getSetting(APPSettings.DEFAULT_CONNECTION_ADDRESS),appSettings.getSetting(APPSettings.SAVE_CONNECTION_INFO).equals("true")));
         Triplet<String, String, Boolean> result = connectDialog.showDialog();
         if (result != null){
-            System.out.println(reachServer(result));
-
-            saveConnexionInformation(result);
+            reachServer(result);
+            // TODO: 23/02/2017 Move after having a valid connection to the server
+            saveConnectionInformation(result);
 
         }
 
@@ -105,13 +102,13 @@ public class RootLayoutController {
         alert.setTitle(Utils.MainTitle);
         alert.setHeaderText("About");
 
-        alert.setContentText("Author: Benoit Chopinet\nAll Right Reserved");
+        alert.setContentText("Author: Benoit Chopinet\nAll Right Reserved 2017");
 
         alert.showAndWait();
     }
     @FXML
     void initialize() {
-        connexionManager = ConnexionManager.getInstance();
+        connectionManager = ConnectionManager.getInstance();
 
         Gauge ms2 = GaugeBuilder
                 .create()
@@ -125,14 +122,14 @@ public class RootLayoutController {
                 .skinType(Gauge.SkinType.LEVEL)
                 .value(320)
                 .maxValue(320)
-                .title("Liquid Fuel")
+                .unit("Liquid Fuel")
                 .build();
         Gauge LO = GaugeBuilder
                 .create()
                 .skinType(Gauge.SkinType.LEVEL)
                 .value(200)
                 .maxValue(200)
-                .title("Liquid Oxygen")
+                .unit("Liquid Oxygen")
                 .build();
 
         rootPane.setRight(LO);
@@ -158,14 +155,14 @@ public class RootLayoutController {
     }
     Timeline fiveSecondsWonder;
 
-    private void saveConnexionInformation(Triplet<String, String, Boolean> toSave){
+    private void saveConnectionInformation(Triplet<String, String, Boolean> toSave){
         if (toSave.getValue2()){
-            appSettings.addSetting(APPSettings.DEFAULT_CONNEXION_NAME,toSave.getValue0());
-            appSettings.addSetting(APPSettings.DEFAULT_CONNEXION_ADDRESS,toSave.getValue1());
-            appSettings.addSetting(APPSettings.SAVE_CONNEXION_INFO,toSave.getValue2().toString());
+            appSettings.addSetting(APPSettings.DEFAULT_CONNECTION_NAME,toSave.getValue0());
+            appSettings.addSetting(APPSettings.DEFAULT_CONNECTION_ADDRESS,toSave.getValue1());
+            appSettings.addSetting(APPSettings.SAVE_CONNECTION_INFO,toSave.getValue2().toString());
         }
         else {
-            appSettings.addSetting(APPSettings.SAVE_CONNEXION_INFO,toSave.getValue2().toString());
+            appSettings.addSetting(APPSettings.SAVE_CONNECTION_INFO,toSave.getValue2().toString());
         }
 
         appSettings.saveSettings();
@@ -174,21 +171,21 @@ public class RootLayoutController {
     /**
      *
      * @param result
-     * @return true if the connexion is established, false if can't connect to the host
+     * @return true if the connection is established, false if can't connect to the host
      */
     private boolean reachServer(Triplet<String,String,Boolean> result) {
         boolean[] isReached = {false};
         loadingProgress.setVisible(true);
-        testConnexionTask = new Task<Void>() {
+        testConnectionTask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
                 System.out.println(LocalTime.now());
                 System.out.println("Tread : start test");
                 updateMessage("Trying to connect to "+ result.getValue1());
                 try {
-                    // test the connexion with the ip address exepts localhost
+                    // test the Connection with the ip address exepts localhost
                     if(!Objects.equals(result.getValue1(), "127.0.0.1")){
-                        System.out.println("Thread : test connexion to "+ result.getValue1());
+                        System.out.println("Thread : test connection to "+ result.getValue1());
                         try (Socket soc = new Socket()) {
                             soc.connect(new InetSocketAddress(result.getValue1(), 23), 2000);
                         }
@@ -196,19 +193,21 @@ public class RootLayoutController {
                     isReached[0] = true;
 
                     // if host has respond
-                    System.out.println("Thread : start connexion");
-                    // start a open connexion procedure
-                    if(connexionManager.OpenConnexion(result.getValue0(),result.getValue1())){
+                    System.out.println("Thread : start Connection");
+                    // start a open Connection procedure
+                    if(connectionManager.OpenConnection(result.getValue0(),result.getValue1())){
                         //ok
+                        System.out.println("Connection establish to "+result.getValue1());
                         isReached[0] = true;
-                        updateMessage("Connexion establish with a KRPC server on "+ result.getValue1());
+                        updateMessage("Connection establish with a KRPC server on "+ result.getValue1());
                     }
                     else {
                         //not ok
+                        System.out.println("Can't connect to "+result.getValue1());
                         isReached[0] = false;
                         updateMessage("Can't connect to a KRPC server on "+ result.getValue1());
                     }
-                    return null;
+
                 // when the socket can't be open
                 } catch (IOException ex) {
                     ex.printStackTrace();
@@ -224,8 +223,8 @@ public class RootLayoutController {
             }
         };
 
-        Thread testco = new Thread(testConnexionTask);
-        statusLabel.textProperty().bind(testConnexionTask.messageProperty());
+        Thread testco = new Thread(testConnectionTask);
+        statusLabel.textProperty().bind(testConnectionTask.messageProperty());
         testco.start();
 
         return isReached[0];

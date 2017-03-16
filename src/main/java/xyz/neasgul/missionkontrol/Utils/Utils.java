@@ -30,7 +30,9 @@ public class Utils {
             return false;
         }
     }
-
+    public static float clamp(float val, float min, float max) {
+        return Math.max(min, Math.min(max, val));
+    }
 
     public static final String MainTitle = "Kerbal AutoPilot";
     public static final String SettingsTitle = "KAP Settings";

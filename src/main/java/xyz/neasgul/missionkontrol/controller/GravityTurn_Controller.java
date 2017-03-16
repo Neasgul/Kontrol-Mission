@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * Created by benoitchopinet on 16/03/2017.
  */
-public class Autopilot_Controller {
+public class GravityTurn_Controller {
 
     ConnectionManager mConnectionManager;
     static GravityTurnSettings generateGravityTurnSettings(SpaceCenter.Vessel vessel, SpaceCenter.CelestialBody body) throws IOException, RPCException {
@@ -22,7 +22,7 @@ public class Autopilot_Controller {
 
         float turnAngle = Utils.clamp((float)(10 + TWR * 5),10,80);
         float turnSpeed = Utils.clamp((float)(baseFactor*10-TWR*baseFactor*3),baseFactor,baseFactor*10);
-        
+
         return new GravityTurnSettings(turnAngle,turnSpeed);
     }
 

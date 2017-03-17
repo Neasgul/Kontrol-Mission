@@ -22,6 +22,7 @@ import org.javatuples.Triplet;
 import xyz.neasgul.missionkontrol.APPSettings;
 import xyz.neasgul.missionkontrol.ConnectDialog;
 import xyz.neasgul.missionkontrol.ConnectionManager;
+import xyz.neasgul.missionkontrol.Controls.AscentRadar;
 import xyz.neasgul.missionkontrol.Launcher;
 import xyz.neasgul.missionkontrol.Utils.Utils;
 
@@ -132,6 +133,8 @@ public class RootLayoutController {
                 .maxValue(200)
                 .unit("Liquid Oxygen")
                 .build();
+        AscentRadar radar = new AscentRadar();
+        rootPane.setCenter(radar);
 
         rootPane.setRight(LO);
         rootPane.setLeft(LF);

@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import xyz.neasgul.missionkontrol.Utils.ResourceResolver;
 import xyz.neasgul.missionkontrol.Utils.Utils;
 import xyz.neasgul.missionkontrol.controller.RootLayoutController;
 
@@ -43,7 +44,7 @@ public class Launcher extends Application{
             try {
                 // Load root layout from fxml file.
                 FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(Launcher.class.getResource("/view/RootLayout.fxml"));
+                loader.setLocation(ResourceResolver.getURLResourceFor(Launcher.class,"/view/RootLayout.fxml"));
                 rootLayout = loader.load();
                 RootLayoutController rootcontroller = loader.getController();
                 rootcontroller.setMainApp(this);

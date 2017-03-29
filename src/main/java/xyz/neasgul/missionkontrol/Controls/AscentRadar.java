@@ -1,69 +1,55 @@
 package xyz.neasgul.missionkontrol.Controls;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.DoublePropertyBase;
 import javafx.scene.control.Control;
 import javafx.scene.control.Skin;
+
+import java.util.stream.Stream;
 
 /**
  * Created by benoitchopinet on 16/03/2017.
  */
 public class AscentRadar extends Control  {
-    private DoubleProperty altitude;
-    private DoubleProperty startAltitude;
-    private DoubleProperty endAltitude;
+    private Double currentAltitude;
+    private Double startAltitude;
+    private Double endAltitude;
+    private Stream<Double> surfaceAltitudeStream;
+    /*
+    Round down altitude
+    b = a - a % 1000;
+    */
 
     @Override
     protected Skin<?> createDefaultSkin() {
         return new AscentRadarSkin(this);
     }
 
-    private void init() {
+    public AscentRadar(Double startAltitude, Double endAltitude, Stream<Double> surfaceAltitudeStream) {
+        this.surfaceAltitudeStream = surfaceAltitudeStream;
+
+        if(startAltitude<0){
+            this.startAltitude = Double.valueOf(0);
+        }
+        else {
+            this.startAltitude = startAltitude - startAltitude % 1000;
+        }
+        if(endAltitude <= startAltitude){
+            this.endAltitude = startAltitude + 10000;
+        }
+        else {
+            this.endAltitude = endAltitude - endAltitude % 1000;
+        }
     }
 
-    public double getAltitude() {
-        return altitude.get();
+    public Double getCurrentAltitude() {
+        return currentAltitude;
     }
 
-    public DoubleProperty altitudeProperty() {
-        return altitude;
-    }
-
-    public void setAltitude(double altitude) {
-        this.altitude.set(altitude);
-    }
-
-    public double getStartAltitude() {
-        return startAltitude.get();
-    }
-
-    public DoubleProperty startAltitudeProperty() {
+    public Double getStartAltitude() {
         return startAltitude;
     }
 
-    public void setStartAltitude(double startAltitude) {
-        if(startAltitude<0){
-            this.startAltitude.set(0);
-        }else {
-            this.startAltitude.set(startAltitude);
-        }
-
-    }
-
-    public double getEndAltitude() {
-        return endAltitude.get();
-    }
-
-    public DoubleProperty endAltitudeProperty() {
+    public Double getEndAltitude() {
         return endAltitude;
     }
-
-    public void setEndAltitude(double endAltitude) {
-        if(endAltitude<=getStartAltitude()){
-            this.endAltitude.set(getStartAltitude()+10000);
-        }else {
-            this.endAltitude.set(endAltitude);
-        }
-
-    }
 }
+

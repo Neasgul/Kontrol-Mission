@@ -12,32 +12,48 @@ import java.util.Random;
  * Created by benoitchopinet on 16/03/2017.
  */
 public class AscentRadarSkin extends SkinBase<AscentRadar> implements Skin<AscentRadar> {
-    private static final int LINES_COUNT =75+1;
+    private static int LINES_COUNT;
     private static final double LEFT_MARGIN = 20;
     private static final double RIGHT_MARGIN = 20;
     private static final double MARGINS = LEFT_MARGIN + RIGHT_MARGIN;
     private static final double MIN_LINE_WIDTH = 1.0;
-    private static final double MIN_MAIN_WIDTH = MIN_LINE_WIDTH * LINES_COUNT;
-    private final Line[] lines = new Line[LINES_COUNT];
-    //private final double[] values = new double[LINES_COUNT];
+    private double MIN_MAIN_WIDTH;
+    private Line[] lines;
+
+    AscentRadar control;
 
 
     public AscentRadarSkin(AscentRadar control) {
         super(control);
-        initLinesAndValues();
+        initLinesAndValues(control);
         initGraphics(control);
+        this.control = control;
+        MIN_MAIN_WIDTH = MIN_LINE_WIDTH * LINES_COUNT;
     }
 
-    private void initLinesAndValues() {
-        final Random random = new Random();
+    private void initLinesAndValues(AscentRadar control) {
+        generateLineCount(control);
+        lines = new Line[LINES_COUNT];
         for (int i = 0; i < LINES_COUNT; ++i) {
             lines[i] = new Line();
-            //values[i] = random.nextDouble();
         }
     }
 
     private void initGraphics(AscentRadar control) {
         getChildren().addAll(lines);
+    }
+
+    private void generateLineCount(AscentRadar control) {
+        int line = 0;
+        double altitude = control.getStartAltitude();
+        while(true){
+            if(altitude>control.getEndAltitude()){
+                break;
+            }
+            line++;
+            altitude+=1000;
+        }
+        LINES_COUNT = line;
     }
 
     @Override
